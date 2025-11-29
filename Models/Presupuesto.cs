@@ -1,56 +1,53 @@
-using presupuestoDetalle;
+namespace tl2_tp8_2025_pato2003.Models;
 
-namespace presupuesto
+public class Presupuesto
 {
-    public class Presupuesto
+    public Presupuesto(int idPresupuesto, string nombreDestinatario, DateOnly fechaCreacion, List<PresupuestoDetalle> detalle)
     {
-        public Presupuesto(int idPresupuesto, string nombreDestinatario, DateOnly fechaCreacion, List<PresupuestoDetalle> detalle)
-        {
-            IdPresupuesto = idPresupuesto;
-            NombreDestinatario = nombreDestinatario;
-            FechaCreacion = fechaCreacion;
-            Detalle = detalle;
-        }
-        public Presupuesto(int idPresupuesto, string nombreDestinatario, DateOnly fechaCreacion)
-        {
-            IdPresupuesto = idPresupuesto;
-            NombreDestinatario = nombreDestinatario;
-            FechaCreacion = fechaCreacion;
-        }
+        IdPresupuesto = idPresupuesto;
+        NombreDestinatario = nombreDestinatario;
+        FechaCreacion = fechaCreacion;
+        Detalle = detalle;
+    }
+    public Presupuesto(int idPresupuesto, string nombreDestinatario, DateOnly fechaCreacion)
+    {
+        IdPresupuesto = idPresupuesto;
+        NombreDestinatario = nombreDestinatario;
+        FechaCreacion = fechaCreacion;
+    }
 
-        public Presupuesto()
-        {
-            Detalle = new List<PresupuestoDetalle>();
-        }
+    public Presupuesto()
+    {
+        Detalle = new List<PresupuestoDetalle>();
+    }
 
-        public int IdPresupuesto{ get; set; }
-        public string NombreDestinatario{ get; set; }
-        public DateOnly FechaCreacion{ get; set; }
-        public List<PresupuestoDetalle> Detalle { get; set; }
+    public int IdPresupuesto{ get; set; }
+    public string NombreDestinatario{ get; set; }
+    public DateOnly FechaCreacion{ get; set; }
+    public List<PresupuestoDetalle> Detalle { get; set; }
 
-        public double MontoPresupuesto()
+    public double MontoPresupuesto()
+    {
+        double montoFinal = 0;
+        foreach (var item in Detalle     )
         {
-            double montoFinal = 0;
-            foreach (var item in Detalle     )
-            {
-                montoFinal+=item.Producto.Precio * item.Cantidad;
-            }
-            return montoFinal;
+            montoFinal+=item.Producto.Precio * item.Cantidad;
         }
+        return montoFinal;
+    }
 
-        public double MontoPresupuestoConIva()
-        {
-            return MontoPresupuesto()*1.21;
-        }
+    public double MontoPresupuestoConIva()
+    {
+        return MontoPresupuesto()*1.21;
+    }
 
-        public int CantidadProductos()
+    public int CantidadProductos()
+    {
+        int cant = 0;
+        foreach (var item in Detalle)
         {
-            int cant = 0;
-            foreach (var item in Detalle)
-            {
-                cant+=item.Cantidad;
-            }
-            return cant;
+            cant+=item.Cantidad;
         }
+        return cant;
     }
 }

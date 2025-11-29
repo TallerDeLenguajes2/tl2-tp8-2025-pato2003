@@ -1,5 +1,8 @@
 using Microsoft.Data.Sqlite;
-using producto;
+using tl2_tp8_2025_pato2003.Models;
+using tl2_tp8_2025_pato2003.Interfaces;
+
+namespace tl2_tp8_2025_pato2003.Repositorios;
 
 public class ProductoRepository : IProductoRepository
 {

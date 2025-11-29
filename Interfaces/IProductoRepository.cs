@@ -1,4 +1,8 @@
-using producto;
+using tl2_tp8_2025_pato2003.Models;
+
+namespace tl2_tp8_2025_pato2003.Interfaces;
+
+
 public interface IProductoRepository
 {
     Producto GetProductoById(int idProducto);
