@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Productos";
+}
+@using producto
+@model List<Producto>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="display-4 mb-0">Productos</h1>
+        <a asp-action="Create" class="btn btn-success">Agregar producto</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col" class="text-end">Precio</th>
+                            <th scope="col" class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var prod in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@prod.IdProducto</td>
+                                <td>@prod.Descripcion</td>
+                                <td class="text-end">@String.Format("{0:C}", prod.Precio)</td>
+                                <td class="text-center text-nowrap">
+                                    <a asp-action="Edit" asp-route-id="@prod.IdProducto" class="btn btn-sm btn-primary me-1">Editar</a>
+                                    <a asp-action="Delete" asp-route-id="@prod.IdProducto" class="btn btn-sm btn-danger me-1">Eliminar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

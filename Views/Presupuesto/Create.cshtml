@@ -1,0 +1,30 @@
+@model presupuesto.Presupuesto
+@{
+    ViewData["Title"] = "Alta Presupuesto";
+}
+@using presupuesto
+@using producto
+
+
+<div class="container py-4">
+    <h1 class="h3 mb-4 text-center">Alta de Presupuesto</h1>
+
+    <form asp-controller="Presupuesto" asp-action="Create" method="post" class="card card-body shadow-sm col-8 mx-auto">
+        <div class="row g-3 mb-3">
+            <div class="col-md-8">
+                <label asp-for="NombreDestinatario" class="form-label">Nombre destinatario</label>
+                <input asp-for="NombreDestinatario" class="form-control" placeholder="Nombre del destinatario" />
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="FechaCreacion" class="form-label">Fecha</label>
+                <input asp-for="FechaCreacion" type="date" class="form-control" />
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Guardar Presupuesto</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
