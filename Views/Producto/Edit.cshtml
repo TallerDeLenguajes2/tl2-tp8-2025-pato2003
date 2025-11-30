@@ -1,20 +1,19 @@
 @{
     ViewData["Title"] = "Modificar Producto";
 }
-@using producto
-@model Producto
+@model tl2_tp8_2025_pato2003.ViewModels.ProductoViewModel
 
 
 <div class="container py-4">
     <h1 class="h3 mb-4 text-center">Modificar Producto</h1>
 
     <form asp-controller="Producto" asp-action="Edit" method="post" class="card card-body shadow-sm col-6 mx-auto">
-        @* Id en oculto (no editable) *@
         <input asp-for="IdProducto" value="@Model.IdProducto" type="hidden" />
 
         <div class="mb-3">
             <label asp-for="Descripcion" class="form-label">Descripción</label>
             <input asp-for="Descripcion" class="form-control"  value="@Model.Descripcion"/>
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
@@ -23,6 +22,7 @@
                 <span class="input-group-text">$</span>
                 <input asp-for="Precio" class="form-control text-start" step="0.01" min="0" />
             </div>
+            <span asp-validation-for="Precio" class="text-danger"></span>
         </div>
 
         <div class="d-flex gap-2">
@@ -31,5 +31,9 @@
         </div>
     </form>
 </div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"/>
+}
 
 

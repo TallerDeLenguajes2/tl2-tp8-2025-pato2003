@@ -1,8 +1,7 @@
-@model presupuesto.Presupuesto
+@model tl2_tp8_2025_pato2003.Models.Presupuesto
 @{
     ViewData["Title"] = "Detalle de Presupuesto";
 }
-@using presupuesto
 
 <div class="container py-4">
     <h1 class="h3 mb-4 text-center">Detalle del Presupuesto</h1>
@@ -81,7 +80,7 @@
 
         <div class="d-flex gap-2 mt-3 justify-content-end">
 
-            <form asp-action="DeleteConfirm" method="post" class="d-flex gap-2">
+            <form asp-action="Delete" method="post" class="d-flex gap-2">
                 <input type="hidden" name="id" value="@Model.IdPresupuesto" />
                 
                 <button type="submit" class="btn btn-danger">Eliminar</button>

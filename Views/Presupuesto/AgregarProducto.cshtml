@@ -1,37 +1,30 @@
-@model List<producto.Producto>
+@model tl2_tp8_2025_pato2003.ViewModels.AgregarProductoViewModel
 @{
     ViewData["Title"] = "Agregar Producto al Presupuesto";
 }
-@using producto
 
 <div class="container py-3">
-    <h2 class="h4 mb-3 text-center">Agregar Producto</h2>
+    <h2 class="h4 mb-3 text-center">Agregar Producto al Presupuesto @Model.IdPresupuesto</h2>
 
     <form asp-controller="Presupuesto" asp-action="AgregarProducto" method="post" class="card card-body shadow-sm col-6 mx-auto">
-        @Html.AntiForgeryToken()
 
+        <input type="hidden" asp-for="IdPresupuesto"/>
         <div class="mb-3">
-            <label for="productoId" class="form-label">Producto</label>
-            <select id="productoId" name="productoId" class="form-select" required>
-                <option value="">-- Seleccione producto --</option>
-                @if (Model != null)
-                {
-                    foreach (var p in Model)
-                    {
-                        <option value="@p.IdProducto">@p.Descripcion (@String.Format("{0:C}", p.Precio))</option>
-                    }
-                }
+            <label asp-for="IdProducto" class="form-label">Producto</label>
+            <select asp-for="IdProducto" class="form-select" asp-items="@Model.ListaProductos" required>
             </select>
+            <span asp-validation-for="IdProducto" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label for="cantidad" class="form-label">Cantidad</label>
-            <input id="cantidad" name="cantidad" type="number" min="1" value="1" class="form-control" required />
+            <label asp-for="Cantidad" class="form-label">Cantidad</label>
+            <input asp-for="Cantidad" name="cantidad" type="number" min="1" value="1" class="form-control" required />
+            <span asp-validation-for="Cantidad" class="text-danger"></span>
         </div>
 
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">Agregar</button>
-            <a asp-controller="Presupuesto" asp-action="Create" class="btn btn-secondary">Cancelar</a>
+            <a asp-controller="Presupuesto" asp-action="Details" asp-route-id="@Model.IdPresupuesto" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </div>

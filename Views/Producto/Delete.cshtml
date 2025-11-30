@@ -1,8 +1,7 @@
-@model producto.Producto
+@model tl2_tp8_2025_pato2003.ViewModels.ProductoViewModel
 @{
     ViewData["Title"] = "Eliminar Producto";
 }
-@using producto
 
 <div class="container py-4">
     <h1 class="h3 mb-4 text-center text-danger">Confirmar Eliminación</h1>
@@ -14,23 +13,21 @@
 
         <div class="mb-3">
             <label class="form-label fw-semibold">ID</label>
-            <p class="form-control-plaintext">@Model.IdProducto</p>
+            <p class="form-control-plaintext">@Html.DisplayFor(model => model.IdProducto)</p>
         </div>
 
         <div class="mb-3">
-            <label class="form-label fw-semibold">Descripción</label>
-            <p class="form-control-plaintext">@Model.Descripcion</p>
+            <label class="form-label fw-semibold">@Html.DisplayNameFor(model => model.Descripcion)</label>
+            <p class="form-control-plaintext">@Html.DisplayFor(model => model.Descripcion)</p>
         </div>
 
         <div class="mb-3">
-            <label class="form-label fw-semibold">Precio</label>
-            <p class="form-control-plaintext">@String.Format("{0:C}", Model.Precio)</p>
+            <label class="form-label fw-semibold">@Html.DisplayNameFor(model => model.Precio)</label>
+            <p class="form-control-plaintext">@Html.DisplayFor(model => model.Precio)</p>
         </div>
 
         <form asp-action="Delete" method="post" class="d-flex gap-2">
-            <input asp-for="IdProducto" value="@Model.IdProducto"  type="hidden" />
-            <input asp-for="Descripcion" value="@Model.Descripcion"  type="hidden" />
-            <input asp-for="Precio" value="@Model.Precio"  type="hidden" />
+            <input value="@Model.IdProducto" name="id" type="hidden" />
             
             <button type="submit" class="btn btn-danger">Eliminar</button>
             <a asp-action="Index" class="btn btn-secondary">Cancelar</a>

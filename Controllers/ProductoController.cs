@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using tl2_tp8_2025_pato2003.Models;
 using tl2_tp8_2025_pato2003.Repositorios;
+using tl2_tp8_2025_pato2003.ViewModels;
 
 
 namespace tl2_tp8_2025_pato2003.Controllers;
@@ -24,13 +25,31 @@ public class ProductoController : Controller
     public IActionResult Edit(int id)
     {
         var producto = _repo.GetProductoById(id);
-        return View(producto);
+
+        if (producto==null)
+        {
+            return NotFound();
+        }
+
+        var productoVM = new ProductoViewModel(producto);
+        return View(productoVM);
     }
 
     [HttpPost]
-    public IActionResult Edit(Producto producto)
+    public IActionResult Edit(ProductoViewModel productoVM)
     {
-        _repo.ModificarProducto(producto);
+        if (!ModelState.IsValid)
+        {
+            return View(productoVM);
+        }
+
+        var nuevoProd = new Producto
+        {
+            IdProducto = productoVM.IdProducto,
+            Descripcion = productoVM.Descripcion,
+            Precio = productoVM.Precio
+        };
+        _repo.ModificarProducto(nuevoProd);
         return RedirectToAction("Index");
     }
 
@@ -41,9 +60,19 @@ public class ProductoController : Controller
     }
 
     [HttpPost]
-    public IActionResult Create(Producto prod)
+    public IActionResult Create(ProductoViewModel productoVM)
     {
-        _repo.AltaProducto(prod);
+        if (!ModelState.IsValid)
+        {
+            return View(productoVM);
+        }
+
+        var nuevoProd = new Producto
+        {
+            Descripcion = productoVM.Descripcion,
+            Precio = productoVM.Precio
+        };
+        _repo.AltaProducto(nuevoProd);
         return RedirectToAction("Index");
     }
 
@@ -51,12 +80,19 @@ public class ProductoController : Controller
     public IActionResult Delete(int id)
     {
         var producto = _repo.GetProductoById(id);
-        return View(producto);
+
+        if (producto == null)
+        {
+            return NotFound();
+        }
+        var productoVM = new ProductoViewModel(producto);
+
+        return View(productoVM);
     }
-    [HttpPost]
-    public IActionResult Delete(Producto producto)
+    [HttpPost,ActionName("Delete")]
+    public IActionResult DeleteConfirm(int id)
     {
-        _repo.EliminarProducto(producto.IdProducto);
+        _repo.EliminarProducto(id);
         return RedirectToAction("Index");
     }
 

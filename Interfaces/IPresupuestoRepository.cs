@@ -8,5 +8,6 @@ public interface IPresupuestoRepository
     void AltaPresupuesto(Presupuesto presupuestoNuevo);
     void ModificarPresupuesto(Presupuesto presupuestoModificado);
     void EliminarPresupuesto(int idPresupuesto);
+    void AgregarDetallePresupuesto(int idPresupuesto, int idProducto, int cantidad);
 
 }

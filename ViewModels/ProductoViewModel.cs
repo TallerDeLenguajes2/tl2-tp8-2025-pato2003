@@ -1,5 +1,5 @@
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using tl2_tp8_2025_pato2003.Models;
 namespace tl2_tp8_2025_pato2003.ViewModels;
 
 public class ProductoViewModel
@@ -8,17 +8,17 @@ public class ProductoViewModel
     {
     }
 
-    public ProductoViewModel(int idProducto, string descripcion, int precio)
+    public ProductoViewModel(Producto producto)
     {
-        IdProducto = idProducto;
-        Descripcion = descripcion;
-        Precio = precio;
+        IdProducto = producto.IdProducto;
+        Descripcion = producto.Descripcion;
+        Precio = producto.Precio;
     }
 
         
     public int IdProducto { get; set; }
     [Display(Name ="Descripcion del Producto")]
-    [StringLength(250,ErrorMessage ="La descripcion no puede superar los 250 caracteres")]
+    [Required(ErrorMessage ="La descripcion es obligatorio")]
     public string Descripcion { get; set; }
     [Display(Name ="Precio Unitario")]
     [Required(ErrorMessage ="El precio es obligatorio")]

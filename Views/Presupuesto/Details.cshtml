@@ -1,8 +1,7 @@
-@model presupuesto.Presupuesto
+@model tl2_tp8_2025_pato2003.Models.Presupuesto
 @{
     ViewData["Title"] = "Detalle de Presupuesto";
 }
-@using presupuesto
 
 <div class="container py-4">
     <h1 class="h3 mb-4 text-center">Detalle del Presupuesto</h1>
@@ -80,8 +79,8 @@
         </div>
 
         <div class="d-flex gap-2 mt-3">
-            
             <a asp-controller="Presupuesto" asp-action="Index" class="btn btn-secondary ms-auto">Volver</a>
+            <a asp-controller="Presupuesto" asp-action="AgregarProducto" asp-route-id="@Model.IdPresupuesto" class="btn btn-success">Agregar Producto</a>
         </div>
     </div>
 </div>

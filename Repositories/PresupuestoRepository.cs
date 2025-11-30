@@ -9,16 +9,15 @@ public class PresupuestoRepository : IPresupuestoRepository
     private string connectionString = "Data Source=DB/Tienda_final.db;";
     public void AltaPresupuesto(Presupuesto presupuestoNuevo)
     {
-        string fecha = presupuestoNuevo.FechaCreacion.Year.ToString() + '-' + presupuestoNuevo.FechaCreacion.Month.ToString() + '-' + presupuestoNuevo.FechaCreacion.Day.ToString();
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
-            string sql = "INSERT INTO Presupuestos (NombreDestinatario, FechaCreacion) VALUES (@nombre, @fecha);SELECT last_insert_rowid();INSERT INTO PresupuestoDetalle (idPresupuesto, idProducto, Cantidad) VALUES (@idPres, @idProd, @cant)";
+            string sql = "INSERT INTO Presupuestos (NombreDestinatario, FechaCreacion) VALUES (@nombre, @fecha)";
 
             using (var command = new SqliteCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@nombre", presupuestoNuevo.NombreDestinatario);
-                command.Parameters.AddWithValue("@fecha", fecha);
+                command.Parameters.AddWithValue("@fecha", presupuestoNuevo.FechaCreacion);
                 command.ExecuteNonQuery();
             }
 
@@ -121,7 +120,7 @@ public class PresupuestoRepository : IPresupuestoRepository
             using(var command = new SqliteCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@nombre", presupuestoModificado.NombreDestinatario);
-                command.Parameters.AddWithValue("@precio", presupuestoModificado.FechaCreacion);
+                command.Parameters.AddWithValue("@fecha", presupuestoModificado.FechaCreacion);
                 command.Parameters.AddWithValue("@idPres", presupuestoModificado.IdPresupuesto);
                 command.ExecuteNonQuery();
 
@@ -129,5 +128,24 @@ public class PresupuestoRepository : IPresupuestoRepository
             connection.Close();
         }
         return;
+    }
+
+    public void AgregarDetallePresupuesto(int idPresupuesto, int idProducto, int cant)
+    {
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            connection.Open();
+            string sql = "INSERT INTO PresupuestosDetalle (idPresupuesto, idProducto, Cantidad) VALUES (@idPres, @idProd, @cant)";
+
+            using (var command = new SqliteCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@idPres", idPresupuesto);
+                command.Parameters.AddWithValue("@idProd", idProducto);
+                command.Parameters.AddWithValue("@cant", cant);
+                command.ExecuteNonQuery();
+            }
+
+            connection.Close();
+        }
     }
 }

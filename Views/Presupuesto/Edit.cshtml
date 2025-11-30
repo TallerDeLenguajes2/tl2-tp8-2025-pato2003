@@ -1,9 +1,7 @@
-@model presupuesto.Presupuesto
 @{
     ViewData["Title"] = "Editar Presupuesto";
 }
-@using presupuesto
-@using producto
+@model tl2_tp8_2025_pato2003.ViewModels.PresupuestoViewModel
 
 <div class="container py-4">
     <h1 class="h3 mb-4 text-center">Editar Presupuesto</h1>
@@ -15,124 +13,23 @@
             <div class="col-md-8">
                 <label asp-for="NombreDestinatario" class="form-label">Nombre destinatario</label>
                 <input asp-for="NombreDestinatario" class="form-control" placeholder="Nombre del destinatario" />
+                <span asp-validation-for="NombreDestinatario" class="text-danger"></span>
             </div>
 
             <div class="col-md-4">
                 <label asp-for="FechaCreacion" class="form-label">Fecha</label>
                 <input asp-for="FechaCreacion" type="date" class="form-control" />
+                <span asp-validation-for="FechaCreacion" class="text-danger"></span>
             </div>
-        </div>
 
-        <h5 class="mb-2">Detalle de productos</h5>
-        <div class="table-responsive mb-3">
-            <table class="table table-sm table-bordered" id="detalleTable">
-                <thead class="table-light">
-                    <tr>
-                        <th style="width:60%;">Producto</th>
-                        <th style="width:20%;">Cantidad</th>
-                        <th style="width:20%;">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.Detalle != null && Model.Detalle.Any())
-                    {
-                        foreach (var item in Model.Detalle)
-                        {
-                            <tr>
-                                <td>
-                                    @item.Producto.Descripcion
-                                </td>
-                                <td>
-                                    <input name="cantidades" type="number" min="1" value="@item.Cantidad" class="form-control" />
-                                </td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-danger btn-remove">Eliminar</button>
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td>
-                                <select name="productoIds" class="form-select">
-                                    <option value="">-- Seleccione producto --</option>
-                                    @if (ViewBag.Productos != null)
-                                    {
-                                        foreach (var p in (List<producto.Producto>)ViewBag.Productos)
-                                        {
-                                            <option value="@p.IdProducto">@p.Descripcion (@String.Format("{0:C}", p.Precio))</option>
-                                        }
-                                    }
-                                </select>
-                            </td>
-                            <td>
-                                <input name="cantidades" type="number" min="1" value="1" class="form-control" />
-                            </td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-sm btn-danger btn-remove">Eliminar</button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-
-        <div class="d-flex mb-3">
-            <button type="button" id="btnAddRow" class="btn btn-outline-primary btn-sm me-2">Agregar fila</button>
-            <small class="text-muted align-self-center">Agrega/quita productos del presupuesto</small>
-        </div>
-
-        <div class="d-flex gap-2">
+            <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">Guardar Cambios</button>
             <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </div>
         </div>
     </form>
 </div>
 
-@section Scripts {
-    <script>
-        (function(){
-            const table = document.getElementById('detalleTable').getElementsByTagName('tbody')[0];
-            const btnAdd = document.getElementById('btnAddRow');
-
-            btnAdd.addEventListener('click', () => {
-                const tr = document.createElement('tr');
-
-                // clona las opciones del primer select disponible
-                const firstSelect = table.querySelector('select');
-                const selectHtml = firstSelect ? firstSelect.outerHTML : '<select name="productoIds" class="form-select"><option value="">-- Seleccione producto --</option></select>';
-
-                tr.innerHTML = `
-                    <td>${selectHtml}</td>
-                    <td><input name="cantidades" type="number" min="1" value="1" class="form-control" /></td>
-                    <td class="text-center"><button type="button" class="btn btn-sm btn-danger btn-remove">Eliminar</button></td>
-                `;
-
-                // quitar id si se clonó alguno
-                const newSelect = tr.querySelector('select');
-                if (newSelect) newSelect.id = '';
-
-                table.appendChild(tr);
-            });
-
-            // delegado para eliminar filas
-            document.addEventListener('click', function(e){
-                if (e.target && e.target.classList.contains('btn-remove')) {
-                    const row = e.target.closest('tr');
-                    const tbody = row.parentElement;
-                    if (tbody.rows.length === 1) {
-                        const sel = row.querySelector('select');
-                        const qty = row.querySelector('input[name="cantidades"]');
-                        if (sel) sel.selectedIndex = 0;
-                        if (qty) qty.value = 1;
-                    } else {
-                        row.remove();
-                    }
-                }
-            });
-        })();
-    </script>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"/>
 }
-  
-// ...existing code...

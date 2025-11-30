@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using System.Timers;
+using tl2_tp8_2025_pato2003.Models;
 
 namespace tl2_tp8_2025_pato2003.ViewModels;
 
@@ -10,11 +10,11 @@ public class PresupuestoViewModel
     {
     }
 
-    public PresupuestoViewModel(int idPresupuesto, string nombreDestinatario, DateOnly fechaCreacion)
+    public PresupuestoViewModel(Presupuesto presupuesto)
     {
-        IdPresupuesto = idPresupuesto;
-        NombreDestinatario = nombreDestinatario;
-        FechaCreacion = fechaCreacion;
+        IdPresupuesto = presupuesto.IdPresupuesto;
+        NombreDestinatario = presupuesto.NombreDestinatario;
+        FechaCreacion = presupuesto.FechaCreacion;
     }
 
     
