@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using tl2_tp8_2025_pato2003.Interfaces;
 using tl2_tp8_2025_pato2003.Models;
 using tl2_tp8_2025_pato2003.Repositorios;
 using tl2_tp8_2025_pato2003.ViewModels;
@@ -9,17 +10,29 @@ namespace tl2_tp8_2025_pato2003.Controllers;
 
 public class PresupuestoController : Controller
 {
-    private PresupuestoRepository _repo;
-    private ProductoRepository _prodRepo;
-    public PresupuestoController()
+    private IPresupuestoRepository _repo;
+    private IProductoRepository _prodRepo;
+    private IAuthenticationService _authService;
+
+    public PresupuestoController(IPresupuestoRepository repo, IProductoRepository prodRepo, IAuthenticationService authService)
     {
-        _repo = new PresupuestoRepository();
-        _prodRepo = new ProductoRepository();
+        _repo = repo;
+        _prodRepo = prodRepo;
+        _authService = authService;
     }
 
     [HttpGet]
     public IActionResult Index()
     {
+        if (!_authService.IsAuthentiicated())
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        if (!_authService.HasAccessLevel("Administrador")&&!_authService.HasAccessLevel("Cliente"))
+        {
+            return RedirectToAction("AccesoDenegado");
+        }
         var listaPresupuestos = _repo.GetPresupuestos();
         return View(listaPresupuestos);
     }
@@ -27,6 +40,15 @@ public class PresupuestoController : Controller
     [HttpGet]
     public IActionResult Create()
     {
+        if (!_authService.IsAuthentiicated())
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        if (!_authService.HasAccessLevel("Administrador"))
+        {
+            return RedirectToAction("AccesoDenegado");
+        }
         return View();
     }
 
@@ -52,6 +74,16 @@ public class PresupuestoController : Controller
     [HttpGet]
     public IActionResult Edit(int id)
     {
+        if (!_authService.IsAuthentiicated())
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        if (!_authService.HasAccessLevel("Administrador"))
+        {
+            return RedirectToAction("AccesoDenegado");
+        }
+
         var presupuesto = _repo.GetPresupuestoById(id);
 
         if (presupuesto==null)
@@ -87,6 +119,16 @@ public class PresupuestoController : Controller
     [HttpGet]
     public IActionResult Details(int id)
     {
+        if (!_authService.IsAuthentiicated())
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        if (!_authService.HasAccessLevel("Administrador")&&!_authService.HasAccessLevel("Cliente"))
+        {
+            return RedirectToAction("AccesoDenegado");
+        }
+
         var presupuesto = _repo.GetPresupuestoById(id);
         return View(presupuesto);
     }
@@ -94,6 +136,16 @@ public class PresupuestoController : Controller
     [HttpGet]
     public IActionResult Delete(int id)
     {
+        if (!_authService.IsAuthentiicated())
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        if (!_authService.HasAccessLevel("Administrador"))
+        {
+            return RedirectToAction("AccesoDenegado");
+        }
+
         var presupuesto = _repo.GetPresupuestoById(id);
         return View(presupuesto);
     }
@@ -109,6 +161,17 @@ public class PresupuestoController : Controller
     [HttpGet]
     public IActionResult AgregarProducto(int id)
     {
+
+        if (!_authService.IsAuthentiicated())
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        if (!_authService.HasAccessLevel("Administrador"))
+        {
+            return RedirectToAction("AccesoDenegado");
+        }
+        
         List<Producto> listaProductos = _prodRepo.GetProductos();
 
         AgregarProductoViewModel model = new AgregarProductoViewModel
@@ -133,6 +196,13 @@ public class PresupuestoController : Controller
         _repo.AgregarDetallePresupuesto(model.IdPresupuesto, model.IdProducto, model.Cantidad);
         return RedirectToAction("Details", new {id=model.IdPresupuesto});
     }
+
+
+    [HttpGet]
+    public IActionResult AccesoDenegado()
+    {
+        return View();
+    }
     
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -140,5 +210,7 @@ public class PresupuestoController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+
 
 }

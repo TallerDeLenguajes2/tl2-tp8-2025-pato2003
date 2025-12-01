@@ -1,0 +1,51 @@
+@model tl2_tp8_2025_pato2003.ViewModels.LoginViewModel 
+@{ 
+    ViewData["Title"] = "Login"; 
+} 
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @Model.ErrorMessage
+    </div>
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active text-white" href="#">Acceder</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body">
+                    <form asp-controller="Login" asp-action="Login" method="post" novalidate>
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label asp-for="Username" class="form-label">Usuario</label>
+                            <input asp-for="Username" class="form-control" placeholder="Ingrese su usuario" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">Contraseña</label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Ingrese su contraseña" />
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Ingresar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer text-center small text-muted">
+                    Ingrese sus credenciales para acceder.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

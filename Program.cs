@@ -1,10 +1,30 @@
+using tl2_tp8_2025_pato2003.Interfaces;
+using tl2_tp8_2025_pato2003.Repositorios;
+using tl2_tp8_2025_pato2003.Services;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Servicios de Sesión y Acceso a Contexto (CLAVE para la autenticación) 
+builder.Services.AddHttpContextAccessor(); 
+builder.Services.AddSession(options => 
+{ 
+options.IdleTimeout = TimeSpan.FromMinutes(30);  
+options.Cookie.HttpOnly = true;  
+options.Cookie.IsEssential = true; 
+}); 
+// Registro de la Inyección de Dependencia (TODOS AddScoped) 
+builder.Services.AddScoped<IProductoRepository, ProductoRepository>(); 
+builder.Services.AddScoped<IPresupuestoRepository, PresupuestoRepository>(); 
+builder.Services.AddScoped<IUserRepository, UsuarioRepository>();  
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();  
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+
+app.UseSession();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
